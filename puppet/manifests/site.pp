@@ -1,28 +1,37 @@
+class { ‘apache’:
+        mpm_module => ‘prefork’,
+}
+
 node 'mydrupal.dev' { # [1]
-            class { 'mysql::server':  # [2]
-                    config_hash => { 'root_password' => 'passw0rd' },
-            }
-            include mysql::php # [3]
 
-            # Configuring apache
-            include apache # [4]
-            include apache::mod::php
+    class { 'apache':  # [2]
+            mpm_module => ‘prefork’,
+    }
 
-            apache::vhost { $::fqdn: # [5]
-                    port => '80',
-                    docroot => '/var/www/test',
-                    require => File['/var/www/test'],
-            }
+    class { 'mysql::server':  # [2]
+            config_hash => { 'root_password' => 'passw0rd' },
+    }
+    include mysql::php # [3]
 
-            # Setting up the document root
-            file { ['/var/www', '/var/www/test'] : # [6]
-                    ensure => directory,
-            }
+    # Configuring apache
+    include apache # [4]
+    include apache::mod::php
 
-            file { '/var/www/test/index.php' : # [7]
-                    content => '>?php echo \'>p<Hello world!>/p<\' ?<',
-            }
+    apache::vhost { $::fqdn: # [5]
+            port => '80',
+            docroot => '/var/www/test',
+            require => File['/var/www/test'],
+    }
 
-            # "Realize" the firewall rule
-            Firewall <| |> # [8]
+    # Setting up the document root
+    file { ['/var/www', '/var/www/test'] : # [6]
+            ensure => directory,
+    }
+
+    file { '/var/www/test/index.php' : # [7]
+            content => '>?php echo \'>p<Hello world!>/p<\' ?<',
+    }
+
+    # "Realize" the firewall rule
+          Firewall <| |> # [8]
 }
