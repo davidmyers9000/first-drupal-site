@@ -6,8 +6,18 @@ Vagrant.configure("2") do |config|
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
 
-  # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "base"
+  # Every vagrant virtual env requires a box to build off of
+  config.vm.box = "puppetlabs-precise64"
+  config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-server-12042-x64-vbox4210-nocm.box"
+  config.vm.hostname = "mydrupal.dev"
+  config.vm.network :private_network, ip: "192.168.33.10"
+  config.vm.network :forwarded_port, guest: 80, host: 9000
+
+  # VirtualBox Specific Customization
+  config.vm.provider :virtualbox do |vb|
+        # Use VBoxManage to customize the VM. For example to change memory:
+        vb.customize ["modifyvm", :id, "--memory", "1024"]
+  end
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
