@@ -12,8 +12,7 @@ if which puppet > /dev/null ; then
 fi
 
 echo "Installing Puppet repo for Ubuntu 12.04 LTS"
-wget -q -o /tmp/puppetlabs-release-precise.deb \
-https://apt.puppetlabs.com/puppetlabs-release-precise.deb
+wget -q https://apt.puppetlabs.com/puppetlabs-release-precise.deb -O /tmp/puppetlabs-release-precise.deb
 
 dpkg -i /tmp/puppetlabs-release-precise.deb
 rm /tmp/puppetlabs-release-precise.deb
