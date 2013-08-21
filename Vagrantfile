@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
   config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-server-12042-x64-vbox4210-nocm.box"
   config.vm.hostname = "mydrupal.dev"
   config.vm.network :private_network, ip: "192.168.33.10"
-  config.vm.network :forwarded_port, guest: 80, host: 8080
+  config.vm.network :forwarded_port, guest: 80, host: 9000
 
   # VirtualBox Specific Customization
   config.vm.provider :virtualbox do |vb|
@@ -24,11 +24,11 @@ Vagrant.configure("2") do |config|
 
   # Enable provisioning with Puppet stand alone.
   config.vm.provision :puppet do |puppet|
-      puppet.facter = { "fqdn" => "local.pyrocms", "hostname" => "www" } 
-      puppet.manifests_path = "puppet/manifests"
-      puppet.manifest_file  = "ubuntu-apache2-pgsql-php5.pp"
-      puppet.module_path  = "puppet/modules"
-  end
+          puppet.manifests_path = "puppet/manifests"
+          puppet.manifest_file  = "site.pp"
+          puppet.module_path = "puppet/modules"
+          puppet.options = "--verbose --debug"
+  end 
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
